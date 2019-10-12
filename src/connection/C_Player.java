@@ -7,11 +7,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import controller.Con_Game;
+import model.IPlayer;
+
 public class C_Player extends Thread {
 
 	private BufferedReader reader;
 	private BufferedWriter writer;
 	private Socket socket;
+	
+	private IPlayer player;
 
 	private int id_player;
 	private String room;
@@ -30,6 +35,7 @@ public class C_Player extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		player = Con_Game.getPlayer(id_player);
 		setUp();
 		this.start();
 	}
@@ -38,11 +44,14 @@ public class C_Player extends Thread {
 	public void run() {
 		while(true) {
 			try {
-				reader.readLine();
+				update(reader.readLine());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private void update(String update) {
 		
 	}
 

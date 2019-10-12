@@ -35,7 +35,7 @@ public class C_Game extends Thread {
 	public void addConnection(Socket socket) {
 		c_players.add(new C_Player(socket, id_players, room));
 		id_players++;
-		if (id_players >= 12) {
+		if (id_players > 12) {
 			isAvailable = false;
 		}
 		
