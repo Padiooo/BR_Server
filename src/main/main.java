@@ -1,10 +1,12 @@
 package main;
 
+import connection.C_Server;
+
 public class main {
 
 	public static void main(String[] args) {
 
-		System.out.println("Hello World !");
+		new C_Server().start();
 
 	}
 

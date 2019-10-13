@@ -22,12 +22,14 @@ public class C_Server extends Thread {
 
 	@Override
 	public void run() {
+		System.out.println("Server running . . .");
 		while (true) {
 			Socket socket = null;
 			try {
 				socket = server.accept();
 				if (socket != null) {
 					con_controller.addConnection(socket);
+					System.out.println("Player added");
 				}
 
 			} catch (IOException e) {

@@ -2,6 +2,8 @@ package model;
 
 import java.util.Observable;
 
+import info.Info;
+
 public class Player extends Observable implements IPlayer {
 
 	private int x;
@@ -10,8 +12,8 @@ public class Player extends Observable implements IPlayer {
 	private int direction_y;
 	private int id_player;
 
-	private int speed_player;
-	private int size_player;
+	private int speed_player = Info.PLAYER_SPEED;
+	private int size_player = Info.PLAYER_SIZE;
 
 	private String death_recap;
 
@@ -28,15 +30,17 @@ public class Player extends Observable implements IPlayer {
 	public boolean move(int direction_x, int direction_y) {
 		this.direction_x = direction_x;
 		this.direction_y = direction_y;
-		x = direction_x * speed_player;
-		y = direction_y * speed_player;
+		x += direction_x * speed_player;
+		y += direction_y * speed_player;
+		setChanged();
+		notifyObservers(this);
 		return false;
 	}
 
 	@Override
 	public boolean rollBack() {
-		x = direction_x * speed_player;
-		y = direction_y * speed_player;
+		x += direction_x * speed_player;
+		y += direction_y * speed_player;
 		return false;
 	}
 
@@ -81,6 +85,41 @@ public class Player extends Observable implements IPlayer {
 		}
 
 		return s.toString();
+	}
+	
+	@Override
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	@Override
+	public void setY(int y) {
+		this.y = y;
+	}
+	
+	@Override
+	public int getX() {
+		return x;
+	}
+	
+	@Override
+	public int getY() {
+		return y;
+	}
+	
+	@Override
+	public int getId() {
+		return id_player;
+	}
+	
+	@Override
+	public BallShoot[] getBalls() {
+		return balls;
+	}
+	
+	@Override
+	public String getDeathRecap() {
+		return death_recap;
 	}
 
 	// ------------------------------------------------------

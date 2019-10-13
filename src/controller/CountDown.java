@@ -4,17 +4,17 @@ public class CountDown extends Thread {
 
 	private final int TIMER_MAX = 5;
 	private int timer = TIMER_MAX;
-	private boolean holdTimer= true;
-	private boolean isCountDownFinished= false;
+	private boolean holdTimer = true;
+	private boolean isCountDownFinished = false;
 
 	public CountDown() {
-		
+
 	}
 
 	@Override
 	public void run() {
 		while (timer > 0) {
-			if (!holdTimer) {
+			if (!getHoldTimer()) {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
@@ -34,8 +34,12 @@ public class CountDown extends Thread {
 		holdTimer = true;
 	}
 
+	public synchronized boolean getHoldTimer() {
+		return holdTimer;
+	}
+
 	public void resetTimer() {
-		timer = TIMER_MAX;
 		holdTimer = false;
+		timer = TIMER_MAX;
 	}
 }

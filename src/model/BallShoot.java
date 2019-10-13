@@ -1,5 +1,7 @@
 package model;
 
+import info.Info;
+
 public class BallShoot extends Thread {
 	
 	private int id;
@@ -7,7 +9,7 @@ public class BallShoot extends Thread {
 	private int x;
 	private int y;
 	
-	private int speed_ball;
+	private int speed_ball = Info.BALL_SPEED;
 	
 	private double angle;
 	

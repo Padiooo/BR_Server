@@ -18,7 +18,6 @@ public class Con_Connection {
 		if(!c_game.isAvailable()) {
 			newCon_Connection();
 		}
-
 		c_game.addConnection(socket);
 	}
 	
