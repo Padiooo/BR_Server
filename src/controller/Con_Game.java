@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import info.Info;
+import logwriter.LogWriter;
 import model.BallShoot;
 import model.GameModel;
 import model.IPlayer;
@@ -13,6 +14,8 @@ public class Con_Game extends Thread implements Observer {
 
 	private GameModel game_model;
 	private ArrayList<IPlayer> players;
+	
+	private StringBuilder log = new StringBuilder();
 
 	public Con_Game(GameModel game_model) {
 		this.game_model = game_model;
@@ -22,11 +25,16 @@ public class Con_Game extends Thread implements Observer {
 	@Override
 	public void run() {
 		while (players.size() > 1) {
-			checkHitBox();
-			removeDeadPlayer();
+			try {
+				checkHitBox();
+				removeDeadPlayer();
+			} catch(NullPointerException n) {
+				
+			}
 		}
-
 		players.get(0).die("You won");
+		log.append(players.get(0).getId() + " won");
+		LogWriter.writeLog(log.toString());
 	}
 
 	public void removeDeadPlayer() {
@@ -71,6 +79,8 @@ public class Con_Game extends Thread implements Observer {
 
 	public void playerDie(IPlayer player_killed, IPlayer player_killer) {
 		player_killed.die("Killed by " + player_killer.getId());
+		log.append(player_killer.getId() + " killed " + player_killed.getId());
+		log.append(System.getProperty("line.separator"));
 	}
 
 	// if distance > pb_distanc => player touched (true)
