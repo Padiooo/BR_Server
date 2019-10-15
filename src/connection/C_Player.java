@@ -80,7 +80,7 @@ public class C_Player extends Thread {
 
 	public void setUp() {
 		//@formatter:off
-		String message = "SETUP " + id_player + " " + Info.WINDOW_SIZE_X + " " + Info.WINDOW_SIZE_Y + " " + Info.CLOCK_TIME;
+		String message = "SETUP " + id_player + " " + Info.WINDOW_SIZE_X + " " + Info.WINDOW_SIZE_Y + " " + Info.CLOCK_TIME + " " + Info.PLAYER_SIZE + " " + Info.BALL_SIZE;
 		//@formatter:on
 		send(message);
 	}

@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Observer;
+
 public interface IPlayer {
 	
 	public boolean move(int direction_x, int direction_y);
@@ -7,6 +9,8 @@ public interface IPlayer {
 	public boolean shoot(int id_ball, int mouse_x, int mouse_y);
 	
 	public boolean reload(int id_ball);
+	
+	public void addObserverX(Observer o);
 	
 	//----------------------------------------------------------
 	

@@ -81,7 +81,6 @@ public class C_Game extends Thread {
 		if (id_players > 12) {
 			isAvailable = false;
 		}
-
 		if (countDown.isAlive()) {
 			countDown.holdTimer();
 		}

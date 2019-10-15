@@ -4,7 +4,8 @@ import info.Info;
 
 public class BallShoot extends Thread {
 	
-	private int id;
+	private int id_player;
+	private int id_ball;
 	
 	private int x;
 	private int y;
@@ -14,8 +15,9 @@ public class BallShoot extends Thread {
 	private double angle;
 	
 
-	public BallShoot(int id, int x, int y, double angle) {
-		this.id = id;
+	public BallShoot(int id_player, int id_ball, int x, int y, double angle) {
+		this.id_player = id_player;
+		this.id_ball = id_ball;
 		this.x = x;
 		this.y = y;
 		this.angle = angle;
@@ -45,7 +47,11 @@ public class BallShoot extends Thread {
 	// ------------------------------------------------------
 
 	public int getBallId() {
-		return id;
+		return id_ball;
+	}
+	
+	public int getPlayerId() {
+		return id_player;
 	}
 
 	public int getX() {

@@ -9,12 +9,13 @@ import logwriter.LogWriter;
 import model.BallShoot;
 import model.GameModel;
 import model.IPlayer;
+import model.Player;
 
 public class Con_Game extends Thread implements Observer {
 
 	private GameModel game_model;
 	private ArrayList<IPlayer> players;
-	
+
 	private StringBuilder log = new StringBuilder();
 
 	public Con_Game(GameModel game_model) {
@@ -24,12 +25,16 @@ public class Con_Game extends Thread implements Observer {
 
 	@Override
 	public void run() {
+		for (IPlayer player : players) {
+			player.addObserverX(this);
+		}
 		while (players.size() > 1) {
 			try {
-				checkHitBox();
+				checkHitBoxBallBall();
+				checkHitBoxPlayerBall();
 				removeDeadPlayer();
-			} catch(NullPointerException n) {
-				
+			} catch (NullPointerException n) {
+
 			}
 		}
 		players.get(0).die("You won");
@@ -37,7 +42,44 @@ public class Con_Game extends Thread implements Observer {
 		LogWriter.writeLog(log.toString());
 	}
 
-	public void removeDeadPlayer() {
+	private void checkHitBoxBallBall() {
+		ArrayList<BallShoot> balls = new ArrayList<BallShoot>();
+		for (IPlayer player : players) {
+			for (BallShoot ball : player.getBalls()) {
+				if (ball != null) {
+					balls.add(ball);
+				}
+			}
+		}
+
+		for (BallShoot ball : balls) {
+			if (ball != null) {
+				for (BallShoot _ball : balls) {
+					if (_ball != null) {
+						if (ball.getPlayerId() != _ball.getPlayerId()) {
+							if (checkDistanceBallBall(ball, _ball)) {
+								game_model.getPlayerById(ball.getPlayerId()).getBalls()[ball.getBallId()] = null;
+								game_model.getPlayerById(_ball.getPlayerId()).getBalls()[_ball.getBallId()] = null;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private boolean checkDistanceBallBall(BallShoot ball, BallShoot _ball) {
+
+		int distance = Info.BALL_SIZE;
+
+		//@formatter:off
+		int bb_distance = (int) Math.sqrt((ball.getX() - _ball.getX()) * (ball.getX() - _ball.getX()) + (ball.getY() - _ball.getY()) * (ball.getY() - _ball.getY()));
+		//@formatter:on
+
+		return distance > bb_distance ? true : false;
+	}
+
+	private void removeDeadPlayer() {
 		ArrayList<IPlayer> dead_players = new ArrayList<IPlayer>();
 		for (IPlayer player : players) {
 			if (!player.isAlive()) {
@@ -56,7 +98,7 @@ public class Con_Game extends Thread implements Observer {
 		}
 	}
 
-	public void checkHitBox() {
+	private void checkHitBoxPlayerBall() {
 		for (IPlayer player : players) {
 			int px = player.getX();
 			int py = player.getY();
@@ -65,7 +107,7 @@ public class Con_Game extends Thread implements Observer {
 					if (player.getId() != _player.getId()) {
 						for (BallShoot ball : _player.getBalls()) {
 							if (ball != null) {
-								if (checkDistance(px, py, ball.getX(), ball.getY())) {
+								if (checkDistancePlayerBall(px, py, ball.getX(), ball.getY())) {
 									playerDie(player, _player);
 									break;
 								}
@@ -77,14 +119,14 @@ public class Con_Game extends Thread implements Observer {
 		}
 	}
 
-	public void playerDie(IPlayer player_killed, IPlayer player_killer) {
+	private void playerDie(IPlayer player_killed, IPlayer player_killer) {
 		player_killed.die("Killed by " + player_killer.getId());
 		log.append(player_killer.getId() + " killed " + player_killed.getId());
 		log.append(System.getProperty("line.separator"));
 	}
 
 	// if distance > pb_distanc => player touched (true)
-	public boolean checkDistance(int px, int py, int bx, int by) {
+	private boolean checkDistancePlayerBall(int px, int py, int bx, int by) {
 
 		if (bx == -99 || by == -99) {
 			return false;
@@ -96,7 +138,7 @@ public class Con_Game extends Thread implements Observer {
 		return (distance > pb_distance) ? true : false;
 	}
 
-	public boolean isPlayerOutBound(IPlayer player) {
+	private boolean isPlayerOutBound(IPlayer player) {
 		int x = player.getX();
 		int y = player.getY();
 
@@ -117,6 +159,7 @@ public class Con_Game extends Thread implements Observer {
 			player.setY(Info.WINDOW_SIZE_Y);
 			outBound = true;
 		}
+		System.out.println(x + " " + y);
 		return outBound;
 	}
 

@@ -18,6 +18,15 @@ public class GameModel {
 	public ArrayList<IPlayer> getPlayers() {
 		return players;
 	}
+	
+	public IPlayer getPlayerById(int index) {
+		for (IPlayer player : players) {
+			if(player.getId() == index) {
+				return player;
+			}
+		}
+		return null;
+	}
 
 	public void removePlayer(IPlayer player) {
 		players.remove(player);

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Observable;
+import java.util.Observer;
 
 import info.Info;
 
@@ -47,7 +48,7 @@ public class Player extends Observable implements IPlayer {
 	@Override
 	public boolean shoot(int id_ball, int mouse_x, int mouse_y) {
 		double angle = Math.atan2(mouse_y - (y - size_player / 2), mouse_x - (x - size_player / 2));
-		BallShoot ball = new BallShoot(id_ball, x, y, angle);
+		BallShoot ball = new BallShoot(id_player, id_ball, x, y, angle);
 		balls[id_ball] = ball;
 		ball.start();
 		return false;
@@ -121,11 +122,17 @@ public class Player extends Observable implements IPlayer {
 	public String getDeathRecap() {
 		return death_recap;
 	}
+	
+	@Override
+	public void addObserverX(Observer o) {
+		addObserver(o);
+	}
 
 	// ------------------------------------------------------
 
 	public String getDeath_recap() {
 		return death_recap;
 	}
+
 
 }
