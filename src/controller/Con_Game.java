@@ -159,7 +159,6 @@ public class Con_Game extends Thread implements Observer {
 			player.setY(Info.WINDOW_SIZE_Y);
 			outBound = true;
 		}
-		System.out.println(x + " " + y);
 		return outBound;
 	}
 

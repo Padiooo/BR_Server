@@ -50,7 +50,7 @@ public class C_Player extends Thread {
 			try {
 				update(reader.readLine());
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println("Player " + id_player + " left");
 				isConnected = false;
 			}
 		}
